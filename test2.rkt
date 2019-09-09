@@ -25,15 +25,11 @@ char
 'x'
 '\x'
 '\\'
-'
-'
 '\t'
 //""
 "\"hello\\"
 "abcde"
 "this is a test"
-"
-"
-
+(>>= != >>>=)
 LABEL
 )

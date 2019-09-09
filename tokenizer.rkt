@@ -9,7 +9,7 @@
     (define decaf-lexer
       (lexer
 
-       [(or )
+       [nothing
         (token 'TEMPLATE-TOK lexeme)]
 
        ;; keywords
@@ -65,13 +65,26 @@
         (token 'BOOLEAN-LIT-TOK lexeme)]
        ["null"
         (token 'NULL-LIT-TOK lexeme)]
-       
-       
-       [(from/to "//" "\n") (next-token)]
-       [(from/to "@$" "$@")
-        (token 'SEXP-TOK (trim-ends "@$" lexeme "$@"))]
-       ["\n" (next-token)]
-       [any-char (token 'CHAR-TOK lexeme)]
+
+       ;; punctuation
+       [(or "(" ")" "{" "}" "[" "]" ";" "," ".")
+        (token 'PUNCTUATION-TOK lexeme)]
+
+       ;; operators
+       [(or "=" ">" "<" "!"
+            "==" ">=" "<=" "!="
+            "+" "-" "*" "/"
+            "&&" "||" "%")
+        (token 'OPERATOR-TOK lexeme)]
+       [(or "~" "?" ":" "++" "--"
+            "&" "|" "^" "<<" ">>" ">>>"
+            "+=" "-=" "*=" "/=" "&=" "|="
+            "^=" "%=" "<<=" ">>=" ">>>=")
+        (token 'FORBIDDEN-OPERATOR-TOK lexeme)]
+
+       ;; otherwise
+       [whitespace (next-token)]
+       [any-char (error (format "unexpected char: ~a" lexeme))]
 
        ))
     (decaf-lexer port)) 
