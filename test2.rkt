@@ -31,5 +31,7 @@ char
 "abcde"
 "this is a test"
 (>>= != >>>=)
+(3)
+
 LABEL
 )

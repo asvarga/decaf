@@ -40,7 +40,7 @@
 
        ;; comments
        [(or (from/to "//" "\n") (from/to "/*" "*/"))
-        (token 'COMMENT-TOK lexeme)]
+        (token 'COMMENT-TOK lexeme #:skip? #t)]
 
        ;; literals
        [(or "0" (: (- numeric "0") (* numeric)))
@@ -92,26 +92,17 @@
 (provide make-tokenizer)
 
 
-(define (make-str-tokenizer port)
-  (define (next-token)
-    (define str-lexer
-      (lexer
-       [(- any-char "\\" "\n" "\"") lexeme]
-       [(: "\\" (- any-char "n" "t")) (trim-ends "\\" lexeme "")]
-       ["\\t" "\t"]
-       ["\\n" "\n"]
-       [any-char (error 'absurd)]  ;; unreachable when passed proper string contents
-       )
-      )
-    (str-lexer port))
-  next-token)
-
-(define (lex-this lexer input) (lambda () (lexer input)))
-
-
+(define str-lexer
+  (lexer
+   [(- any-char "\\" "\n" "\"") lexeme]
+   [(: "\\" (- any-char "n" "t")) (trim-ends "\\" lexeme "")]
+   ["\\t" "\t"]
+   ["\\n" "\n"]
+   [any-char (error 'absurd)]  ;; unreachable when passed proper string contents
+   )
+  )
 (define (clean str)
-  ;; TODO: find quicker way to build string from lexer
-  (string-join (apply-tokenizer-maker make-str-tokenizer str) "")
+  (string-join (apply-lexer str-lexer str) "")
   )
 
 
