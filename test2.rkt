@@ -33,5 +33,9 @@ char
 (>>= != >>>=)
 (3)
 
+<DECAF>
+123
+</DECAF>
+
 LABEL
 )

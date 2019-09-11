@@ -70,6 +70,12 @@
        [(or "(" ")" "{" "}" "[" "]" ";" "," ".")
         (token 'PUNCTUATION-TOK lexeme)]
 
+       ;; DECAF++
+       [(: "<" (* upper-case) ">")
+        (token 'LANG-START-TOK (trim-ends "<" lexeme ">"))]
+       [(: "</" (* upper-case) ">")
+        (token 'LANG-END-TOK (trim-ends "</" lexeme ">"))]
+
        ;; operators
        [(or "=" ">" "<" "!"
             "==" ">=" "<=" "!="
