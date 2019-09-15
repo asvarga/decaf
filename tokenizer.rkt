@@ -10,8 +10,25 @@
     (define decaf-lexer
       (lexer
 
-       [nothing
-        (token+ 'TEMPLATE-TOK "" lexeme "" lexeme-start lexeme-end)]
+      ;  [nothing
+      ;   (token+ 'TEMPLATE-TOK "" lexeme "" lexeme-start lexeme-end)]
+
+       ;; These must come first
+       ;; comments
+       [(or (from/to "//" "\n") (from/to "/*" "*/"))
+        (next-token)]
+       ;; strings
+       [(: "\""
+           (* (or (:- any-char "\\" "\n" "\"")  ;; don't match single \
+                  (: "\\" any-char)))          ;; \ captures next char
+           "\"")
+        (token 'STRING-LIT-TOK                 ;; clean using str-lexer
+                (clean (trim-ends "\"" lexeme "\""))
+                #:position (+ (pos lexeme-start) 1)
+                #:line (line lexeme-start)
+                #:column (+ (col lexeme-start) 1)
+                #:span (- (pos lexeme-end)
+                          (pos lexeme-start) 2))]
 
        ;; DECAF++
        [(: "<DECAF>")
@@ -24,10 +41,6 @@
         (token+ 'LANG-END-TOK "</" lexeme ">" lexeme-start lexeme-end)]
 
        ;; keywords
-      ;  [(or "break" "class" "continue" "else" "extends"
-      ;       "if" "new" "private" "protected" "public"
-      ;       "return" "static" "super" "this" "while")
-      ;   (token+ 'KEYWORD-TOK "" lexeme "" lexeme-start lexeme-end)]
        ["break" (token+ 'BREAK-TOK "" lexeme "" lexeme-start lexeme-end)]
        ["class" (token+ 'CLASS-TOK "" lexeme "" lexeme-start lexeme-end)]
        ["continue" (token+ 'CONTINUE-TOK "" lexeme "" lexeme-start lexeme-end)]
@@ -64,11 +77,6 @@
        [(: (or "_" alphabetic) (* (or "_" alphabetic numeric)))
         (token+ 'IDENTIFIER-TOK "" lexeme "" lexeme-start lexeme-end)]
 
-       ;; comments
-       [(or (from/to "//" "\n") (from/to "/*" "*/"))
-        ;;(token 'COMMENT-TOK lexeme #:skip? #t)]
-        (next-token)]
-
        ;; literals
        [(or "0" (: (:- numeric "0") (* numeric)))
         (token+ 'INT-LIT-TOK "" lexeme "" lexeme-start lexeme-end)]
@@ -82,17 +90,6 @@
         (token 'CHAR-LIT-TOK "\t")]
        ["'\\n'"
         (token 'CHAR-LIT-TOK "\n")]
-       [(: "\""
-           (* (or (:- any-char "\\" "\n" "\"")  ;; don't match single \
-                  (: "\\" any-char)))          ;; \ captures next char
-           "\"")
-        (token 'STRING-LIT-TOK                 ;; clean using str-lexer
-                (clean (trim-ends "\"" lexeme "\""))
-                #:position (+ (pos lexeme-start) 1)
-                #:line (line lexeme-start)
-                #:column (+ (col lexeme-start) 1)
-                #:span (- (pos lexeme-end)
-                          (pos lexeme-start) 2))]
        [(or "true" "false")
         (token+ 'BOOLEAN-LIT-TOK "" lexeme "" lexeme-start lexeme-end)]
        ["null"
@@ -102,23 +99,24 @@
        ["(" (token+ 'OPEN-PAREN-TOK "" lexeme "" lexeme-start lexeme-end)]
        [")" (token+ 'CLOSE-PAREN-TOK "" lexeme "" lexeme-start lexeme-end)]
        ["{" (token+ 'OPEN-CURLY-TOK "" lexeme "" lexeme-start lexeme-end)]
-       ["}" (token+ 'PUNCTUATION-TOK "" lexeme "" lexeme-start lexeme-end)]
+       ["}" (token+ 'CLOSE-CURLY-TOK "" lexeme "" lexeme-start lexeme-end)]
        ["[" (token+ 'OPEN-SQUARE-TOK "" lexeme "" lexeme-start lexeme-end)]
-       ["]" (token+ 'PUNCTUATION-TOK "" lexeme "" lexeme-start lexeme-end)]
+       ["]" (token+ 'CLOSE-SQUARE-TOK "" lexeme "" lexeme-start lexeme-end)]
        [";" (token+ 'SEMICOLON-TOK "" lexeme "" lexeme-start lexeme-end)]
        ["," (token+ 'COMMA-TOK "" lexeme "" lexeme-start lexeme-end)]
        ["." (token+ 'PERIOD-TOK "" lexeme "" lexeme-start lexeme-end)]
 
        ;; operators
-       [(or "=" "||" "&&" "==" "!=" "<" ">" "<=" ">=" "+" "-" "*" "/" "%")
-        (token+ 'BIN-OPERATOR-TOK "" lexeme "" lexeme-start lexeme-end)]
+       ["=" (token+ 'EQ-TOK "" lexeme "" lexeme-start lexeme-end)]
+       [(or "||" "&&" "==" "!=" "<" ">" "<=" ">=" "+" "-" "*" "/" "%")
+        (token+ 'BIN-OP-TOK "" lexeme "" lexeme-start lexeme-end)]
        [(or "+" "-" "!")
-        (token+ 'UN-OPERATOR-TOK "" lexeme "" lexeme-start lexeme-end)]
+        (token+ 'UN-OP-TOK "" lexeme "" lexeme-start lexeme-end)]
        [(or "~" "?" ":" "++" ":-"
             "&" "|" "^" "<<" ">>" ">>>"
             "+=" "-=" "*=" "/=" "&=" "|="
             "^=" "%=" "<<=" ">>=" ">>>=")
-        (token+ 'FORBIDDEN-OPERATOR-TOK "" lexeme "" lexeme-start lexeme-end)]
+        (token+ 'FORBIDDEN-OP-TOK "" lexeme "" lexeme-start lexeme-end)]
 
        ;; otherwise
        [whitespace (next-token)]

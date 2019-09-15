@@ -1,10 +1,11 @@
 #lang brag
 
-Start : DecafStart ;DecafSubLang
+Start : DecafStart
 
 DecafSubLang : DECAF-LANG-START-TOK DecafStart DECAF-LANG-END-TOK
 
 DecafStart : Class+
+
 Class : CLASS-TOK IDENTIFIER-TOK Super? OPEN-CURLY-TOK Member* CLOSE-CURLY-TOK
 Super : EXTENDS-TOK IDENTIFIER-TOK
 Member : Field | Method | Ctor
@@ -22,7 +23,7 @@ Type : PRIM-TYPE-TOK
 VarDeclaratorList : VarDeclarator COMMA-TOK VarDeclaratorList
                   | VarDeclarator
 VarDeclarator : VarDeclaratorId
-              | VarDeclaratorId = Expression
+              | VarDeclaratorId EQ-TOK Expression
 VarDeclaratorId : IDENTIFIER-TOK
                 | VarDeclaratorId OPEN-SQUARE-TOK CLOSE-SQUARE-TOK
 Block : OPEN-CURLY-TOK Statement* CLOSE-CURLY-TOK
@@ -37,9 +38,10 @@ Statement : SEMICOLON-TOK
           | BREAK-TOK SEMICOLON-TOK
           | SUPER-TOK ActualArgs SEMICOLON-TOK
           | Block
-Expression : Expression BIN-OP-TOKEN Expression
+Expression : Expression BinaryOp Expression
            | UN-OP-TOKEN Expression
            | Primary
+BinaryOp : BIN-OP-TOK | EQ-TOK
 Primary : NewArrayExpr
         | NonNewArrayExpr
         | IDENTIFIER-TOK
