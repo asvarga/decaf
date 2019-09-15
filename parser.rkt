@@ -1,10 +1,12 @@
 #lang brag
 
+;; see http://cs.brown.edu/courses/cs126/decaf-syntax.pdf
+
 Start : DecafStart
 
 DecafSubLang : DECAF-LANG-START-TOK DecafStart DECAF-LANG-END-TOK
 
-DecafStart : Class+
+DecafStart : Block ;; Class+
 
 Class : CLASS-TOK IDENTIFIER-TOK Super? OPEN-CURLY-TOK Member* CLOSE-CURLY-TOK
 Super : EXTENDS-TOK IDENTIFIER-TOK

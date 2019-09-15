@@ -5,21 +5,9 @@
 
 (apply-tokenizer-maker make-tokenizer #<<LABEL
 
-// a line comment
-class Adder {
-  static public void main(String[] argv)
-  {
-    IO.putString ("enter two integers: ");
-    int x = IO.getInt ();
-    int y = IO.getInt ();
-
-    IO.putInt (x);
-    IO.putString (" + ");
-    IO.putInt (y);
-    IO.putString (" = ");
-    IO.putInt (x+y);
-    IO.putString ("\n");
-  }
+{
+  if C1 if C2 S1 else S2;
+  if C1 { if C2 S2 else S2 };
 }
 
 LABEL
