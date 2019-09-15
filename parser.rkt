@@ -6,7 +6,7 @@ Start : DecafStart
 
 DecafSubLang : DECAF-LANG-START-TOK DecafStart DECAF-LANG-END-TOK
 
-DecafStart : Block ;; Class+
+DecafStart : Class+ ;; Block
 
 Class : CLASS-TOK IDENTIFIER-TOK Super? OPEN-CURLY-TOK Member* CLOSE-CURLY-TOK
 Super : EXTENDS-TOK IDENTIFIER-TOK
