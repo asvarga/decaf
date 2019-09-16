@@ -1,4 +1,4 @@
 *.rkt~
 compiled/
-decaftests_rkt/*
 .vscode/
+decaf/decaftests/*.rkt

@@ -6,16 +6,15 @@ import os
 ####
 
 if __name__ == "__main__":
+    source = sys.argv[1] if len(sys.argv) >= 2 else "./decaf/decaftests/"
+    target = sys.argv[2] if len(sys.argv) >= 3 else source
 
-    source = sys.argv[1]
-    target = sys.argv[2]
-    if not source: sys.exit("no source directory provided")
-    if not target: sys.exit("no sarget directory provided")
+    print("Turning {}*.decaf files into ${}*.rkt files by prepending `#lang decaf`".format(source, target))
 
     for filename in os.listdir(source):
-        if filename.endswith(".decaf"): 
+        if filename.endswith(".decaf"):
             sfilename = os.path.join(source, filename)
-            tfilename = os.path.join(target, filename)+".rkt"
+            tfilename = os.path.join(target, filename[:-6])+".rkt"
 
             with open(tfilename, "w") as tf:
                 tf.write("#lang decaf\n\n")

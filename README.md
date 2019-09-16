@@ -3,21 +3,24 @@
 
 ### Building
 
-To build the language, run:
+To install decaf, run:
 
-> cd decaf
-> raco pkg install
+> ./bin/install
 
 ### Testing
 
 To decafify the test files, run:
 
-> ./scripts/decafify.py decaftests/ decaftests_rkt/
+> ./bin/decafify
+
+### Running
+
+Run `decaf/decaftests/adder.rkt` for example with:
+
+> racket decaf/decaftests/adder.rkt
 
 ### TODO
 
-- make `*.decaf` files independently excutable
-    + may be slower than using `*.decaf.rkt`
 - read more "Beautiful Racket"
 - dangling else
 - operator precedence

@@ -1,9 +1,0 @@
-#lang decaf
-
-
-class Hello {
-  public static void main(String argv[])
-  {
-    IO.putString ("hello world!\n");
-  }
-}
