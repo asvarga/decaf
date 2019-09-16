@@ -15,6 +15,10 @@ To decafify the test files, run:
 
 ### TODO
 
+- make `*.decaf` files independently excutable
+    + may be slower than using `*.decaf.rkt`
+- organize directories
+- read more "Beautiful Racket"
 - dangling else
 - operator precedence
-- organize directories
+
