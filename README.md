@@ -5,6 +5,7 @@
 
 To build the language, run:
 
+> cd decaf
 > raco pkg install
 
 ### Testing
@@ -17,7 +18,6 @@ To decafify the test files, run:
 
 - make `*.decaf` files independently excutable
     + may be slower than using `*.decaf.rkt`
-- organize directories
 - read more "Beautiful Racket"
 - dangling else
 - operator precedence

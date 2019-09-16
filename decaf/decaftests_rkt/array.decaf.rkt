@@ -1,0 +1,21 @@
+#lang decaf
+
+class c {
+   c x;
+
+   public int[] y()	{ return new int[10]; }
+
+   public void m () {
+      x.y()[1];
+    }
+
+   public int n() {
+      if (true) { }
+      else {
+	 return 1;
+       }
+    }
+
+   public static void main() { }
+
+}
