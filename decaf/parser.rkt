@@ -2,12 +2,18 @@
 
 ;; see http://cs.brown.edu/courses/cs126/decaf-syntax.pdf
 
+;; TOP LANG
 Start : DecafStart
 
+;; SUBLANGS
+AnySubLang : DecafSubLang | SexprSubLang
 DecafSubLang : DECAF-LANG-START-TOK DecafStart DECAF-LANG-END-TOK
+             | DECAF-LANG-START-TOK DecafStart ANY-LANG-END-TOK
+SexprSubLang : SEXPR-LANG-START-TOK SexprStart SEXPR-LANG-END-TOK
+             | SEXPR-LANG-START-TOK SexprStart ANY-LANG-END-TOK
 
-DecafStart : Class+ ;; Block
-
+;; DECAF
+DecafStart : Class+
 Class : CLASS-TOK IDENTIFIER-TOK Super? OPEN-CURLY-TOK Member* CLOSE-CURLY-TOK
 Super : EXTENDS-TOK IDENTIFIER-TOK
 Member : Field | Method | Ctor
@@ -40,8 +46,9 @@ Statement : SEMICOLON-TOK
           | BREAK-TOK SEMICOLON-TOK
           | SUPER-TOK ActualArgs SEMICOLON-TOK
           | Block
+          | AnySubLang
 Expression : Expression BinaryOp Expression
-           | UN-OP-TOKEN Expression
+           | UN-OP-TOK Expression
            | Primary
 BinaryOp : BIN-OP-TOK | EQ-TOK
 Primary : NewArrayExpr
@@ -69,8 +76,11 @@ ExprList : Expression
          | Expression COMMA-TOK ExprList
 
 
-
-
+;; SEXPR
+SexprStart : Sexpr
+Sexpr : OPEN-PAREN-TOK Sexpr* CLOSE-PAREN-TOK
+      | BinaryOp | UN-OP-TOK | IDENTIFIER-TOK | Literal
+      | AnySubLang
 
 
 

@@ -10,10 +10,8 @@
     (define decaf-lexer
       (lexer
 
-      ;  [nothing
-      ;   (token+ 'TEMPLATE-TOK "" lexeme "" lexeme-start lexeme-end)]
+       ;; TOP LANG
 
-       ;; These must come first
        ;; comments
        [(or (from/to "//" "\n") (from/to "/*" "*/"))
         (next-token)]
@@ -30,15 +28,24 @@
                 #:span (- (pos lexeme-end)
                           (pos lexeme-start) 2))]
 
-       ;; DECAF++
-       [(: "<DECAF>")
+       ;; SUBLANGS
+       [(or "<D>" "<DECAF>")
         (token+ 'DECAF-LANG-START-TOK "<" lexeme ">" lexeme-start lexeme-end)]
-       [(: "</DECAF>")
+       [(or "</D>" "</DECAF>")
         (token+ 'DECAF-LANG-END-TOK "</" lexeme ">" lexeme-start lexeme-end)]
-       [(: "<" (* upper-case) ">")
-        (token+ 'LANG-START-TOK "<" lexeme ">" lexeme-start lexeme-end)]
-       [(: "</" (* upper-case) ">")
-        (token+ 'LANG-END-TOK "</" lexeme ">" lexeme-start lexeme-end)]
+       [(or "<S>" "<SEXPR>")
+        (token+ 'SEXPR-LANG-START-TOK "<" lexeme ">" lexeme-start lexeme-end)]
+       [(or "</S>" "</SEXPR>")
+        (token+ 'SEXPR-LANG-END-TOK "</" lexeme ">" lexeme-start lexeme-end)]
+      ;  [(: "<" (* upper-case) ">")
+      ;   (token+ 'LANG-START-TOK "<" lexeme ">" lexeme-start lexeme-end)]
+      ;  [(: "</" (* upper-case) ">")
+      ;   (token+ 'LANG-END-TOK "</" lexeme ">" lexeme-start lexeme-end)]
+       ["</>"
+        (token+ 'ANY-LANG-END-TOK "</" lexeme ">" lexeme-start lexeme-end)]
+
+
+       ;; DECAF
 
        ;; keywords
        ["break" (token+ 'BREAK-TOK "" lexeme "" lexeme-start lexeme-end)]
