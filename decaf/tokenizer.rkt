@@ -94,9 +94,11 @@
        [(: "'\\" (:- any-char "n" "t") "'")
         (token+ 'CHAR-LIT-TOK "'\\" lexeme "'" lexeme-start lexeme-end)]
        ["'\\t'"
-        (token 'CHAR-LIT-TOK "\t")]
+        ;;(token 'CHAR-LIT-TOK "\t")]
+        (token+ 'CHAR-LIT-TOK "'" lexeme "'" lexeme-start lexeme-end)]
        ["'\\n'"
-        (token 'CHAR-LIT-TOK "\n")]
+        ;;(token 'CHAR-LIT-TOK "\n")]
+        (token+ 'CHAR-LIT-TOK "'" lexeme "'" lexeme-start lexeme-end)]
        [(or "true" "false")
         (token+ 'BOOLEAN-LIT-TOK "" lexeme "" lexeme-start lexeme-end)]
        ["null"

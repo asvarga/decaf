@@ -46,10 +46,10 @@ Statement : SEMICOLON-TOK
           | BREAK-TOK SEMICOLON-TOK
           | SUPER-TOK ActualArgs SEMICOLON-TOK
           | Block
-          | AnySubLang
 Expression : Expression BinaryOp Expression
            | UN-OP-TOK Expression
            | Primary
+           | AnySubLang
 BinaryOp : BIN-OP-TOK | EQ-TOK
 Primary : NewArrayExpr
         | NonNewArrayExpr
