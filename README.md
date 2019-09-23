@@ -21,7 +21,10 @@ Run `decaf/decaftests/adder.rkt` for example with:
 
 ### TODO
 
-- read more "Beautiful Racket"
 - dangling else
 - operator precedence
 
+### Maybe Later
+
+- syntax coloring, indentation, buttons
+- documentation

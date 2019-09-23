@@ -16,6 +16,7 @@
        [(or (from/to "//" "\n") (from/to "/*" "*/"))
         (next-token)]
        ;; strings
+       ;; TODO: use token+ ?
        [(: "\""
            (* (or (:- any-char "\\" "\n" "\"")  ;; don't match single \
                   (: "\\" any-char)))          ;; \ captures next char
